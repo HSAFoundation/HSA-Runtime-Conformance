@@ -1,0 +1,4514 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &memory_ops:1:0:$full:$large:$default;
+
+decl prog function &abort()();
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_rlx_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_rlx_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_rlx_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_rlx_agent_b32 $s0, [$d1];
+    atomicnoret_st_global_rlx_agent_b32 [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_rlx_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_rlx_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_rlx_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_rlx_agent_b64 $d2, [$d1];
+    atomicnoret_st_global_rlx_agent_b64 [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_rlx_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_rlx_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_rlx_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_rlx_system_b32 $s0, [$d1];
+    atomicnoret_st_global_rlx_system_b32 [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_rlx_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_rlx_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_rlx_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_rlx_system_b64 $d2, [$d1];
+    atomicnoret_st_global_rlx_system_b64 [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_scacq_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_scacq_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_scacq_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_scacq_agent_b32 $s0, [$d1];
+    atomicnoret_st_global_rlx_agent_b32 [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_scacq_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_scacq_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_scacq_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_scacq_agent_b64 $d2, [$d1];
+    atomicnoret_st_global_rlx_agent_b64 [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_scacq_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_scacq_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_scacq_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    atomic_ld_global_scacq_system_b32 $s0, [$d1];
+    atomicnoret_st_global_rlx_system_b32 [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_ld_global_scacq_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_ld_global_scacq_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_ld_global_scacq_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_ld_global_scacq_system_b64 $d2, [$d1];
+    atomicnoret_st_global_rlx_system_b64 [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_rlx_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_rlx_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_rlx_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_rlx_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_rlx_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_rlx_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_rlx_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_rlx_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_rlx_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_rlx_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_rlx_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_rlx_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_rlx_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_rlx_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_rlx_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_rlx_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scacq_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scacq_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scacq_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_scacq_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scacq_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scacq_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scacq_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_scacq_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scacq_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scacq_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scacq_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_scacq_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scacq_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scacq_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scacq_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_scacq_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_screl_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_screl_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_screl_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_screl_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_screl_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_screl_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_screl_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_screl_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_screl_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_screl_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_screl_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_screl_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_screl_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_screl_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_screl_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_screl_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scar_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scar_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scar_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_scar_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scar_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scar_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scar_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_scar_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scar_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scar_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scar_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_and_global_scar_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_and_global_scar_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_and_global_scar_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_and_global_scar_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_and_global_scar_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_rlx_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_rlx_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_rlx_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_rlx_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_rlx_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_rlx_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_rlx_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_rlx_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_rlx_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_rlx_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_rlx_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_rlx_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_rlx_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_rlx_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_rlx_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_rlx_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scacq_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scacq_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scacq_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_scacq_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scacq_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scacq_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scacq_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_scacq_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scacq_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scacq_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scacq_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_scacq_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scacq_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scacq_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scacq_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_scacq_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_screl_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_screl_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_screl_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_screl_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_screl_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_screl_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_screl_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_screl_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_screl_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_screl_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_screl_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_screl_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_screl_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_screl_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_screl_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_screl_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scar_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scar_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scar_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_scar_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scar_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scar_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scar_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_scar_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scar_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scar_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scar_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_or_global_scar_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_or_global_scar_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_or_global_scar_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_or_global_scar_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_or_global_scar_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_rlx_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_rlx_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_rlx_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_rlx_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_rlx_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_rlx_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_rlx_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_rlx_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_rlx_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_rlx_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_rlx_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_rlx_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_rlx_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_rlx_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_rlx_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_rlx_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scacq_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scacq_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scacq_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_scacq_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scacq_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scacq_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scacq_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_scacq_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scacq_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scacq_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scacq_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_scacq_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scacq_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scacq_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scacq_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_scacq_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_screl_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_screl_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_screl_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_screl_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_screl_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_screl_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_screl_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_screl_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_screl_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_screl_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_screl_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_screl_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_screl_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_screl_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_screl_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_screl_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scar_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scar_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scar_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_scar_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scar_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scar_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scar_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_scar_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scar_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scar_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scar_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_xor_global_scar_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_xor_global_scar_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_xor_global_scar_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_xor_global_scar_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_xor_global_scar_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_rlx_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_rlx_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_rlx_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_rlx_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_rlx_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_rlx_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_rlx_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_rlx_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_rlx_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_rlx_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_rlx_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_rlx_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_rlx_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_rlx_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_rlx_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_rlx_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scacq_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scacq_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scacq_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_scacq_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scacq_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scacq_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scacq_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_scacq_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scacq_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scacq_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scacq_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_scacq_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scacq_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scacq_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scacq_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_scacq_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_screl_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_screl_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_screl_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_screl_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_screl_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_screl_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_screl_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_screl_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_screl_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_screl_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_screl_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_screl_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_screl_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_screl_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_screl_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_screl_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scar_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scar_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scar_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_scar_agent_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scar_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scar_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scar_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_scar_agent_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scar_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scar_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scar_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_exch_global_scar_system_b32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_exch_global_scar_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_exch_global_scar_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_exch_global_scar_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_exch_global_scar_system_b64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_rlx_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_rlx_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_rlx_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_rlx_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_rlx_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_rlx_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_rlx_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_rlx_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_rlx_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_rlx_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_rlx_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scacq_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scacq_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scacq_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scacq_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scacq_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scacq_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scacq_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scacq_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scacq_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scacq_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scacq_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_screl_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_screl_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_screl_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_screl_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_screl_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_screl_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_screl_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_screl_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_screl_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_screl_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_screl_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scar_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scar_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scar_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scar_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scar_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scar_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_add_global_scar_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_add_global_scar_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_add_global_scar_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_add_global_scar_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_add_global_scar_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_rlx_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_rlx_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_rlx_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_rlx_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_rlx_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_rlx_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_rlx_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_rlx_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_rlx_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_rlx_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_rlx_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scacq_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scacq_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scacq_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scacq_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scacq_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scacq_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scacq_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scacq_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scacq_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scacq_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scacq_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_screl_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_screl_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_screl_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_screl_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_screl_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_screl_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_screl_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_screl_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_screl_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_screl_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_screl_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scar_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scar_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scar_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scar_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scar_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scar_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_sub_global_scar_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_sub_global_scar_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_sub_global_scar_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_sub_global_scar_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_sub_global_scar_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_rlx_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_rlx_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_rlx_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_rlx_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_rlx_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_rlx_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_rlx_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_rlx_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_rlx_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_rlx_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_rlx_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_rlx_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_rlx_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_rlx_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_rlx_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_rlx_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scacq_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scacq_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scacq_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_scacq_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scacq_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scacq_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scacq_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_scacq_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scacq_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scacq_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scacq_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_scacq_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scacq_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scacq_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scacq_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_scacq_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_screl_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_screl_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_screl_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_screl_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_screl_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_screl_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_screl_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_screl_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_screl_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_screl_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_screl_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_screl_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_screl_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_screl_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_screl_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_screl_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scar_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scar_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scar_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_scar_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scar_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scar_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scar_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_scar_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scar_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scar_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scar_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapinc_global_scar_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapinc_global_scar_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapinc_global_scar_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapinc_global_scar_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapinc_global_scar_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_rlx_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_rlx_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_rlx_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_rlx_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_rlx_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_rlx_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_rlx_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_rlx_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_rlx_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_rlx_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_rlx_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_rlx_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_rlx_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_rlx_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_rlx_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_rlx_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scacq_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scacq_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scacq_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_scacq_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scacq_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scacq_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scacq_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_scacq_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scacq_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scacq_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scacq_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_scacq_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scacq_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scacq_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scacq_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_scacq_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_screl_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_screl_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_screl_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_screl_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_screl_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_screl_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_screl_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_screl_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_screl_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_screl_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_screl_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_screl_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_screl_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_screl_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_screl_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_screl_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scar_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scar_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scar_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_scar_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scar_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scar_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scar_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_scar_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scar_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scar_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scar_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_wrapdec_global_scar_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_wrapdec_global_scar_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_wrapdec_global_scar_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_wrapdec_global_scar_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_wrapdec_global_scar_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_rlx_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_rlx_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_rlx_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_rlx_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_rlx_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_rlx_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_rlx_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_rlx_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_rlx_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_rlx_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_rlx_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scacq_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scacq_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scacq_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scacq_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scacq_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scacq_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scacq_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scacq_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scacq_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scacq_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scacq_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_screl_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_screl_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_screl_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_screl_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_screl_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_screl_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_screl_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_screl_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_screl_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_screl_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_screl_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scar_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scar_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scar_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scar_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scar_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scar_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_max_global_scar_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_max_global_scar_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_max_global_scar_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_max_global_scar_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_max_global_scar_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_rlx_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_rlx_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_rlx_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_rlx_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_rlx_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_rlx_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_rlx_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_rlx_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_rlx_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_rlx_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_rlx_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scacq_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scacq_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scacq_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scacq_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scacq_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scacq_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scacq_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scacq_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scacq_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scacq_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scacq_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_screl_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_screl_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_screl_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_screl_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_screl_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_screl_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_screl_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_screl_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_screl_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_screl_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_screl_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_agent_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_agent_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_agent_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scar_agent_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_agent_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_agent_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_agent_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scar_agent_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_agent_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_agent_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_agent_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scar_agent_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_agent_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_agent_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_agent_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scar_agent_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_system_u32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_system_u32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_system_u32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scar_system_u32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_system_u64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_system_u64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_system_u64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scar_system_u64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_system_s32_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_system_s32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_system_s32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_min_global_scar_system_s32 $s1, [$d0], $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_min_global_scar_system_s64_kernel(
+ */
+
+prog kernel &__memory_atomic_min_global_scar_system_s64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_min_global_scar_system_s64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_min_global_scar_system_s64 $d1, [$d0], $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_rlx_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_rlx_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_rlx_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_rlx_agent_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_rlx_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_rlx_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_rlx_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_rlx_agent_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_rlx_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_rlx_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_rlx_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_rlx_system_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_rlx_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_rlx_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_rlx_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_rlx_system_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scacq_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scacq_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scacq_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_scacq_agent_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scacq_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scacq_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scacq_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_scacq_agent_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scacq_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scacq_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scacq_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_scacq_system_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scacq_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scacq_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scacq_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_scacq_system_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_screl_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_screl_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_screl_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_screl_agent_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_screl_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_screl_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_screl_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_screl_agent_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_screl_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_screl_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_screl_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_screl_system_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_screl_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_screl_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_screl_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_screl_system_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scar_agent_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scar_agent_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scar_agent_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_scar_agent_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scar_agent_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scar_agent_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scar_agent_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_scar_agent_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scar_system_b32_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scar_system_b32_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scar_system_b32_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u32 $s0, [$d1];
+    atomic_cas_global_scar_system_b32 $s1, [$d0], $s0, $s0;
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __memory_atomic_cas_global_scar_system_b64_kernel(
+ */
+
+prog kernel &__memory_atomic_cas_global_scar_system_b64_kernel(
+    kernarg_u64 %data,
+    kernarg_u64 %value) {
+
+@__memory_atomic_cas_global_scar_system_b64_kernel_entry:
+    // BB#0:
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%data];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%value];
+    ld_global_u64 $d2, [$d1];
+    atomic_cas_global_scar_system_b64 $d1, [$d0], $d2, $d2;
+    // %return
+    ret;
+};
+

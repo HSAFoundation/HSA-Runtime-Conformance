@@ -1,0 +1,2705 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &verify_image_region:1:0:$full:$large:$default;
+
+/*
+ * verify_image_region
+ */
+
+extension "IMAGE";
+
+decl prog function &abort()();
+
+prog kernel &__verify_image_region_kernel_f32_1d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_1d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+    
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask, start_region, end_region and bits values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_global_u32 $s1, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_global_u32 $s2, [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s2;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_f32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1d_f32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, $s0;
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field 
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    sub_near_f32 $s1, $s2, $s6;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    sub_near_f32 $s1, $s3, $s7;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    sub_near_f32 $s1, $s4, $s8;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha output error field.
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_1db(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_1db_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+    
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_global_u32 $s1, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_global_u32 $s2, [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s2;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_f32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1db_f32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, $s0;
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field 
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    sub_near_f32 $s1, $s2, $s6;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    sub_near_f32 $s1, $s3, $s7;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    sub_near_f32 $s1, $s4, $s8;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha output error field.
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_1da(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_1da_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    //This check the array index value
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_f32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1da_f32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    sub_near_f32 $s1, $s2, $s6;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    sub_near_f32 $s1, $s3, $s7;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    sub_near_f32 $s1, $s4, $s8;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_2d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_2d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_f32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_2d_f32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    sub_near_f32 $s1, $s2, $s6;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    sub_near_f32 $s1, $s3, $s7;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    sub_near_f32 $s1, $s4, $s8;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_2ddepth(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_2ddepth_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component value from the selected location
+    ld_global_f32 $s5, [$d1];
+
+    //Load the pixel component values
+    ldimage_2ddepth_f32_rwimg_u32 $s1, $d2, ($s0, $s9);
+
+    //Check the depth channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the depth image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the depth component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_2da(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_2da_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_f32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_2da_f32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9, $s10);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    sub_near_f32 $s1, $s2, $s6;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    sub_near_f32 $s1, $s3, $s7;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    sub_near_f32 $s1, $s4, $s8;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_2dadepth(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_2dadepth_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_global_f32 $s5, [$d1];
+
+    //Load the pixel component values
+    ldimage_2dadepth_f32_rwimg_u32 $s1, $d2, ($s0, $s9, $s10);
+
+    //Check the depth channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the depth image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the depth component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_f32_3d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_f32_3d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Calculate the floating point error tolerance 
+    //based on the data type bits value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bits];
+    ld_global_u32 $s1, [$d1];
+    //The scale is 2 to the power of bits (shift 1 to the left
+    //bit times) 
+    shl_u32 $s2, 0x1, $s1;
+    cvt_f32_u32 $s1, $s2;
+    //The floating point tolerance is abs(0.6/float(scale))
+    div_f32 $s15, 0.6f, $s1;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_f32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_3d_f32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9, $s10);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    sub_near_f32 $s1, $s1, $s5;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    sub_near_f32 $s1, $s2, $s6;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    sub_near_f32 $s1, $s3, $s7;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    sub_near_f32 $s1, $s4, $s8;
+    abs_f32 $s1, $s1;
+    cmp_lt_b1_f32 $c0, $s1, $s15;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_1d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_1d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+    
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_global_u32 $s1, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_global_u32 $s2, [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s2;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_u32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1d_u32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, $s0;
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field 
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha output error field.
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_1db(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_1db_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+    
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_global_u32 $s1, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_global_u32 $s2, [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s2;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_u32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1db_u32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, $s0;
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field 
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha output error field.
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_1da(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_1da_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    //This check the array index value
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_u32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1da_u32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_2d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_2d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_u32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_2d_u32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_2ddepth(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_2ddepth_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component value from the selected location
+    ld_global_u32 $s5, [$d1];
+
+    //Load the pixel component values
+    ldimage_2ddepth_u32_rwimg_u32 $s1, $d2, ($s0, $s9);
+
+    //Check the depth channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the depth image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the depth component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_2da(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_2da_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_u32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_2da_u32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9, $s10);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_2dadepth(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_2dadepth_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_global_u32 $s5, [$d1];
+
+    //Load the pixel component values
+    ldimage_2dadepth_u32_rwimg_u32 $s1, $d2, ($s0, $s9, $s10);
+
+    //Check the depth channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the depth image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the depth component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_u32_3d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_u32_3d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_u32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_3d_u32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9, $s10);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_u32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_1d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_1d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+    
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_global_u32 $s1, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_global_u32 $s2, [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s2;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_s32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1d_s32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, $s0;
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field 
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha output error field.
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_1db(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_1db_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+    
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_global_u32 $s1, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_global_u32 $s2, [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s2;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_s32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1db_s32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, $s0;
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field 
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha output error field.
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_1da(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_1da_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    //This check the array index value
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_s32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_1da_s32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_2d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_2d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_s32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_2d_s32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_2ddepth(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_2ddepth_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v2_global_u32 ($s1, $s2), [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v2_global_u32 ($s3, $s4), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s3;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component value from the selected location
+    ld_global_s32 $s5, [$d1];
+
+    //Load the pixel component values
+    ldimage_2ddepth_s32_rwimg_u32 $s1, $d2, ($s0, $s9);
+
+    //Check the depth channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the depth image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the depth component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_2da(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_2da_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_s32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_2da_s32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9, $s10);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_2dadepth(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_2dadepth_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_global_s32 $s5, [$d1];
+
+    //Load the pixel component values
+    ldimage_2dadepth_s32_rwimg_u32 $s1, $d2, ($s0, $s9, $s10);
+
+    //Check the depth channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the depth image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the depth component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};
+
+prog kernel &__verify_image_region_kernel_s32_3d(
+    kernarg_rwimg %image,
+    kernarg_u64 %rgn_values,
+    kernarg_u64 %bkg_values,
+    kernarg_u64 %start_region,
+    kernarg_u64 %end_region,
+    kernarg_u64 %bits,
+    kernarg_u64 %cmp_mask,
+    kernarg_u64 %error)
+{
+@__verify_image_region_kernel_s32_3d_entry:
+    // BB#0:                                // %entry
+    mov_b64 $d2, 0;
+    dim_u32 $s1;
+
+    ret;
+
+    ld_kernarg_rwimg $d2, [%image];
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%error];
+    and_b32 $s14, $s14, 0x00000000;
+
+    //Load the cmp_mask value
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%cmp_mask];
+    ld_global_u32 $s12, [$d1];
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%start_region];
+    ld_v3_global_u32 ($s1,$s2,$s3), [$d1];
+
+    ld_kernarg_align(4)_width(all)_u64 $d1, [%end_region];
+    ld_v3_global_u32 ($s4,$s5,$s6), [$d1];
+
+    workitemabsid_u32 $s0, 0;
+    //If coord < start_region.x the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s0, $s1;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.x the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s0, $s4;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s9, 1;
+    //If coord < start_region.y the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s9, $s2;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.y the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s9, $s5;
+    cbr_b1 $c0, @BB0_1;
+
+    workitemabsid_u32 $s10, 2;
+    //If coord < start_region.z the coord is out of the region
+    cmp_lt_b1_u32 $c0, $s10, $s3;
+    cbr_b1 $c0, @BB0_1;
+    //If coord > end_region.z the coord is out of the region
+    cmp_gt_b1_u32 $c0, $s10, $s6;
+    cbr_b1 $c0, @BB0_1;
+
+    //Specify the comparison component values from rgn_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%rgn_values];
+    br @BB0_2;
+
+@BB0_1:
+    //Specify the comparison component values from bkg_values
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%bkg_values];
+
+@BB0_2:
+
+    //Load the comparison component values from the selected location
+    ld_v4_global_s32 ($s5, $s6, $s7, $s8), [$d1];
+
+    //Load the pixel component values
+    ldimage_v4_3d_s32_rwimg_u32 ($s1, $s2, $s3, $s4), $d2, ($s0, $s9, $s10);
+
+    //Check the red channel cmp_mask 
+    and_b32 $s13, $s12, 0x1000;
+    cmp_ne_b1_b32 $c0, $s13, 0x1000;
+    cbr_b1 $c0, @BB0_3;
+    //Compare the red image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s1, $s5;
+    cbr_b1 $c0, @BB0_3;
+    //Set the bit in the red component error field
+    or_b32 $s14, $s14, 0x1000;
+
+@BB0_3:
+
+    //Check the green channel cmp_mask 
+    and_b32 $s13, $s12, 0x0100;
+    cmp_ne_b1_b32 $c0, $s13, 0x0100;
+    cbr_b1 $c0, @BB0_4;
+    //Compare the green image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s2, $s6;
+    cbr_b1 $c0, @BB0_4;
+    //Set the bit in the green component error field
+    or_b32 $s14, $s14, 0x0100;
+
+@BB0_4:
+
+    //Check the blue channel cmp_mask 
+    and_b32 $s13, $s12, 0x0010;
+    cmp_ne_b1_b32 $c0, $s13, 0x0010;
+    cbr_b1 $c0, @BB0_5;
+    //Compare the blue image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s3, $s7;
+    cbr_b1 $c0, @BB0_5;
+    //Set the bit in the blue component error field
+    or_b32 $s14, $s14, 0x0010;
+
+@BB0_5:
+
+    //Check the alpha channel cmp_mask 
+    and_b32 $s13, $s12, 0x0001;
+    cmp_ne_b1_b32 $c0, $s13, 0x0001;
+    cbr_b1 $c0, @BB0_6;
+    //Compare the alpha image component with the loaded value
+    cmp_eq_b1_s32 $c0, $s4, $s8;
+    cbr_b1 $c0, @BB0_6;
+    //Set the bit in the alpha component error field
+    or_b32 $s14, $s14, 0x0001;
+
+@BB0_6:
+    st_global_u32 $s14, [$d0];
+
+    ret;
+};

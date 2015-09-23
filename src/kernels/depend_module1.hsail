@@ -1,0 +1,75 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &depend_module1:1:0:$full:$large:$default;
+
+/*
+ *  Kernels: depend_module1 
+ *
+ *  Description: The module includes element_add_fn definition, will be called 
+ *  by the other module, to test the dependency.
+ *
+ *  Psuedo code:
+ *  declare prog function &element_add()();
+ *  __kernel void no_op() { 
+ *     return;
+ *  }
+ *
+ */
+
+prog function &element_add_fn(arg_u32 %out)(arg_u32 %in0, arg_u32 %in1)
+{
+    ld_arg_u32 $s0, [%in0];
+    ld_arg_u32 $s1, [%in1];
+    add_u32 $s2, $s0, $s1;
+    st_arg_u32 $s2, [%out];
+    ret;
+};
+
+prog kernel &__no_op_kernel() {
+@__no_op_kernel_entry:
+    // BB#0:                                // %entry
+    ret;
+};

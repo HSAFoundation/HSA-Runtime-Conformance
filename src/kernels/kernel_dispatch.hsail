@@ -1,0 +1,305 @@
+module &_tmp_snk_31210_updated_opt_bc:1:0:$full:$large:$default;
+extension "amd:gcn";
+extension "IMAGE";
+
+decl function &kernel_dispatch()(
+	arg_u64 %queue,
+	arg_u64 %aql,
+	arg_u64 %lparm_d);
+
+decl prog function &hsa_queue_load_write_index_relaxed(arg_u64 %ret)(arg_u64 %arg_p0);
+
+decl prog function &hsa_queue_store_write_index_relaxed()(
+	arg_u64 %arg_p0,
+	arg_u64 %arg_p1);
+
+decl prog function &hsa_signal_store_relaxed()(
+	arg_u64 %arg_p0,
+	arg_u64 %arg_p1);
+
+decl prog function &abort()();
+
+prog kernel &__OpenCL_kernel1_kernel(
+	kernarg_u64 %__global_offset_0,
+	kernarg_u64 %__global_offset_1,
+	kernarg_u64 %__global_offset_2,
+	kernarg_u64 %__printf_buffer,
+	kernarg_u64 %__vqueue_pointer,
+	kernarg_u64 %__aqlwrap_pointer,
+	kernarg_u64 %queue,
+	kernarg_u64 %aql,
+	kernarg_u64 %lparm_d)
+{
+	pragma "AMD RTI", "ARGSTART:__OpenCL_kernel1_kernel";
+	pragma "AMD RTI", "version:3:1:104";
+	pragma "AMD RTI", "device:generic";
+	pragma "AMD RTI", "uniqueid:1024";
+	pragma "AMD RTI", "memory:private:0";
+	pragma "AMD RTI", "memory:region:0";
+	pragma "AMD RTI", "memory:local:0";
+	pragma "AMD RTI", "value:__global_offset_0:u64:1:1:0";
+	pragma "AMD RTI", "value:__global_offset_1:u64:1:1:16";
+	pragma "AMD RTI", "value:__global_offset_2:u64:1:1:32";
+	pragma "AMD RTI", "pointer:__printf_buffer:u8:1:1:48:uav:7:1:RW:0:0:0";
+	pragma "AMD RTI", "value:__vqueue_pointer:u64:1:1:64";
+	pragma "AMD RTI", "value:__aqlwrap_pointer:u64:1:1:80";
+	pragma "AMD RTI", "pointer:queue:struct:1:1:96:uav:7:64:RW:0:0:0";
+	pragma "AMD RTI", "pointer:aql:struct:1:1:112:uav:7:64:RW:0:0:0";
+	pragma "AMD RTI", "pointer:lparm_d:struct:1:1:128:uav:7:128:RW:0:0:0";
+	pragma "AMD RTI", "constarg:8:lparm_d";
+	pragma "AMD RTI", "function:1:0";
+	pragma "AMD RTI", "memory:64bitABI";
+	pragma "AMD RTI", "privateid:8";
+	pragma "AMD RTI", "enqueue_kernel:0";
+	pragma "AMD RTI", "kernel_index:0";
+	pragma "AMD RTI", "reflection:0:size_t";
+	pragma "AMD RTI", "reflection:1:size_t";
+	pragma "AMD RTI", "reflection:2:size_t";
+	pragma "AMD RTI", "reflection:3:size_t";
+	pragma "AMD RTI", "reflection:4:size_t";
+	pragma "AMD RTI", "reflection:5:size_t";
+	pragma "AMD RTI", "reflection:6:hsa_queue_t*";
+	pragma "AMD RTI", "reflection:7:hsa_kernel_dispatch_packet_t*";
+	pragma "AMD RTI", "reflection:8:snk_lparm_t*";
+	pragma "AMD RTI", "ARGEND:__OpenCL_kernel1_kernel";
+
+@__OpenCL_kernel1_kernel_entry:
+	// BB#0:
+	ld_kernarg_align(8)_width(all)_u64	$d0, [%queue];
+	ld_kernarg_align(8)_width(all)_u64	$d1, [%aql];
+	ld_kernarg_align(8)_width(all)_u64	$d2, [%lparm_d];
+	{
+		arg_u64 %queue;
+		arg_u64 %aql;
+		arg_u64 %lparm_d;
+		st_arg_align(8)_u64	$d0, [%queue];
+		st_arg_align(8)_u64	$d1, [%aql];
+		st_arg_align(8)_u64	$d2, [%lparm_d];
+		call	&kernel_dispatch () (%queue, %aql, %lparm_d);
+	}
+	ret;
+};
+
+function &kernel_dispatch()(
+	arg_u64 %queue,
+	arg_u64 %aql,
+	arg_u64 %lparm_d)
+{
+	align(8) private_u8 %__privateStack[8];
+
+@kernel_dispatch_entry:
+	// BB#0:
+	ld_arg_align(8)_u64	$d0, [%queue];
+	ld_global_align(4)_u32	$s0, [$d0+24];
+	add_u32	$s0, $s0, 4294967295;
+	mov_b64	$d2, $d0;
+	{
+		arg_u64 %hsa_queue_load_write_index_relaxed;
+		arg_u64 %__param_p0;
+		st_arg_align(8)_u64	$d2, [%__param_p0];
+		call	&hsa_queue_load_write_index_relaxed (%hsa_queue_load_write_index_relaxed) (%__param_p0);
+		ld_arg_align(8)_u64	$d1, [%hsa_queue_load_write_index_relaxed];
+	}
+	cvt_u64_u32	$d3, $s0;
+	and_b64	$d3, $d3, $d1;
+	shl_u64	$d3, $d3, 6;
+	ld_global_align(8)_u64	$d4, [$d0+8];
+	add_u64	$d3, $d4, $d3;
+	ld_arg_align(8)_u64	$d4, [%lparm_d];
+	ld_global_align(4)_u32	$s0, [$d4];
+	ld_arg_align(8)_u64	$d5, [%aql];
+	ld_align(2)_u16	$s1, [$d3+2];
+	or_b32	$s0, $s1, $s0;
+	st_align(2)_u16	$s0, [$d3+2];
+	ld_global_align(8)_u32	$s0, [$d4+8];
+	st_align(4)_u32	$s0, [$d3+12];
+	ld_global_align(8)_u16	$s0, [$d4+32];
+	st_align(2)_u16	$s0, [$d3+4];
+	ld_global_align(4)_u32	$s0, [$d4];
+	cmp_lt_b1_s32	$c0, $s0, 2;
+	cbr_b1	$c0, @BB1_2;
+	// BB#1:
+	ld_global_align(8)_u32	$s0, [$d4+16];
+	st_align(4)_u32	$s0, [$d3+16];
+	ld_global_align(8)_u16	$s0, [$d4+40];
+	st_align(2)_u16	$s0, [$d3+6];
+	br	@BB1_3;
+
+@BB1_2:
+	st_align(4)_u32	1, [$d3+16];
+	st_align(2)_u16	1, [$d3+6];
+
+@BB1_3:
+	ld_global_align(4)_u32	$s0, [$d4];
+	cmp_lt_b1_s32	$c0, $s0, 3;
+	cbr_b1	$c0, @BB1_5;
+	// BB#4:
+	ld_global_align(8)_u32	$s0, [$d4+24];
+	st_align(4)_u32	$s0, [$d3+20];
+	ld_global_align(8)_u16	$s0, [$d4+48];
+	st_align(2)_u16	$s0, [$d3+8];
+	br	@BB1_6;
+
+@BB1_5:
+	st_align(4)_u32	1, [$d3+20];
+	st_align(2)_u16	1, [$d3+8];
+
+@BB1_6:
+	ld_global_align(8)_u64	$d6, [$d5+40];
+	st_align(8)_u64	$d6, [$d3+40];
+	ld_global_align(8)_u64	$d6, [$d5+32];
+	st_align(8)_u64	$d6, [$d3+32];
+	ld_global_align(4)_u32	$s0, [$d5+24];
+	st_align(4)_u32	$s0, [$d3+24];
+	ld_global_align(4)_u32	$s0, [$d5+28];
+	st_align(4)_u32	$s0, [$d3+28];
+	ld_global_align(8)_u64	$d5, [$d5+56];
+	st_align(8)_u64	$d5, [$d3+56];
+	ld_global_align(4)_u32	$s0, [$d4+56];
+	cmp_le_b1_s32	$c0, $s0, -1;
+	cbr_b1	$c0, @BB1_7;
+	// BB#8:
+	ld_align(2)_u16	$s0, [$d3];
+	ld_global_align(4)_u32	$s1, [$d4+60];
+	shl_u32	$s1, $s1, 8;
+	or_b32	$s0, $s0, $s1;
+	st_align(2)_u16	$s0, [$d3];
+	br	@BB1_9;
+
+@BB1_7:
+	// %._crit_edge
+	ld_align(2)_u16	$s0, [$d3];
+
+@BB1_9:
+	and_b32	$s0, $s0, 65535;
+	ld_global_align(4)_u32	$s1, [$d4+64];
+	shl_u32	$s1, $s1, 9;
+	or_b32	$s0, $s0, $s1;
+	st_align(2)_u16	$s0, [$d3];
+	add_u64	$d5, $d1, 1;
+	ld_global_align(4)_u32	$s1, [$d4+68];
+	shl_u32	$s1, $s1, 11;
+	or_b32	$s0, $s0, $s1;
+	st_align(2)_u16	$s0, [$d3];
+	st_u8	2, [$d3];
+	{
+		arg_u64 %__param_p0;
+		arg_u64 %__param_p1;
+		st_arg_align(8)_u64	$d2, [%__param_p0];
+		st_arg_align(8)_u64	$d5, [%__param_p1];
+		call	&hsa_queue_store_write_index_relaxed () (%__param_p0, %__param_p1);
+	}
+	lda_private_u32	$s0, [%__privateStack];
+	cvt_u64_u32	$d2, $s0;
+	ld_global_align(8)_u64	$d0, [$d0+16];
+	st_private_align(8)_u64	$d0, [%__privateStack];
+	{
+		arg_u64 %__param_p0;
+		arg_u64 %__param_p1;
+		st_arg_align(8)_u64	$d2, [%__param_p0];
+		st_arg_align(8)_u64	$d1, [%__param_p1];
+		call	&hsa_signal_store_relaxed () (%__param_p0, %__param_p1);
+	}
+	ret;
+};
+
+prog kernel &__OpenCL_kernel2_kernel(
+	kernarg_u64 %__global_offset_0,
+	kernarg_u64 %__global_offset_1,
+	kernarg_u64 %__global_offset_2,
+	kernarg_u64 %__printf_buffer,
+	kernarg_u64 %__vqueue_pointer,
+	kernarg_u64 %__aqlwrap_pointer,
+	kernarg_u64 %arg)
+{
+	pragma "AMD RTI", "ARGSTART:__OpenCL_kernel2_kernel";
+	pragma "AMD RTI", "version:3:1:104";
+	pragma "AMD RTI", "device:generic";
+	pragma "AMD RTI", "uniqueid:1026";
+	pragma "AMD RTI", "memory:private:0";
+	pragma "AMD RTI", "memory:region:0";
+	pragma "AMD RTI", "memory:local:0";
+	pragma "AMD RTI", "value:__global_offset_0:u64:1:1:0";
+	pragma "AMD RTI", "value:__global_offset_1:u64:1:1:16";
+	pragma "AMD RTI", "value:__global_offset_2:u64:1:1:32";
+	pragma "AMD RTI", "pointer:__printf_buffer:u8:1:1:48:uav:7:1:RW:0:0:0";
+	pragma "AMD RTI", "value:__vqueue_pointer:u64:1:1:64";
+	pragma "AMD RTI", "value:__aqlwrap_pointer:u64:1:1:80";
+	pragma "AMD RTI", "pointer:arg:u32:1:1:96:uav:7:4:RW:0:0:0";
+	pragma "AMD RTI", "function:1:0";
+	pragma "AMD RTI", "memory:64bitABI";
+	pragma "AMD RTI", "privateid:8";
+	pragma "AMD RTI", "enqueue_kernel:0";
+	pragma "AMD RTI", "kernel_index:1";
+	pragma "AMD RTI", "reflection:0:size_t";
+	pragma "AMD RTI", "reflection:1:size_t";
+	pragma "AMD RTI", "reflection:2:size_t";
+	pragma "AMD RTI", "reflection:3:size_t";
+	pragma "AMD RTI", "reflection:4:size_t";
+	pragma "AMD RTI", "reflection:5:size_t";
+	pragma "AMD RTI", "reflection:6:int*";
+	pragma "AMD RTI", "ARGEND:__OpenCL_kernel2_kernel";
+
+@__OpenCL_kernel2_kernel_entry:
+	// BB#0:
+	ld_kernarg_align(8)_width(all)_u64	$d0, [%arg];
+	ld_global_align(4)_const_width(all)_u32	$s0, [$d0];
+	add_u32	$s0, $s0, 4;
+	st_global_align(4)_u32	$s0, [$d0];
+	ret;
+};
+
+prog function &hsa_queue_load_write_index_relaxed(arg_u64 %ret)(arg_u64 %arg_p0)
+{
+
+@hsa_queue_load_write_index_relaxed_entry:
+	ld_arg_align(8)_u64	$d0, [%arg_p0];
+	// d0 has the queue address
+	addqueuewriteindex_global_rlx_u64	$d1, [$d0], 1;
+	// d1 has the queue's write_index
+	st_arg_u64	$d1, [%ret];
+	// return write index
+	ret;
+};
+
+prog function &hsa_queue_store_write_index_relaxed()(
+	arg_u64 %arg_p0,
+	arg_u64 %arg_p1)
+{
+
+@hsa_queue_store_write_index_relaxed_entry:
+	ld_arg_align(8)_u64	$d0, [%arg_p0];
+	// d0 has the queue address
+	ld_arg_align(8)_u64	$d1, [%arg_p1];
+	// d2 has write index 
+	stqueuewriteindex_global_rlx_u64	[$d0], $d1;
+	// store write index d1 to queue d0
+	ret;
+};
+
+prog function &hsa_signal_store_relaxed()(
+	arg_u64 %arg_p0,
+	arg_u64 %arg_p1)
+{
+
+@hsa_signal_store_relaxed_entry:
+	ld_arg_align(8)_u64	$d0, [%arg_p0];
+	// d0 has signal handle 
+	ld_arg_align(8)_u64	$d1, [%arg_p1];
+	// d2 has value 
+	signalnoret_st_rlx_b64_sig64	$d0, $d1;
+	// store value d1 to signal handle d0
+	ret;
+};
+
+prog function &hsa_signal_load_relaxed(arg_u64 %ret)(arg_u64 %arg_p0)
+{
+
+@hsa_signal_load_relaxed_entry:
+	ld_arg_align(8)_u64	$d0, [%arg_p0];
+	// d0 has signal handle 
+	signal_ld_rlx_b64_sig64	$d1, $d0;
+	// load value d1 from signal handle d0
+	st_arg_u64	$d1, [%ret];
+	ret;
+};

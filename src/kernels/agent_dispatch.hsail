@@ -1,0 +1,136 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &agent_dispatch:1:0:$full:$large:$default;
+
+decl prog function &abort()();
+
+prog kernel &__agent_dispatch_kernel(
+	kernarg_u64 %return_addresses,
+	kernarg_u64 %dispatch_args,
+	kernarg_u64 %signal_handle,
+	kernarg_u64 %count, 
+	kernarg_u64 %service_queue) {
+@__agent_dispatch_kernel_entry:
+    // BB#0:                                // %entry
+    ld_kernarg_align(8)_width(all)_u64	$d0, [%service_queue];  // d0 has the queue address
+    
+    // this is used to help to compute the greatest write_index for the doorbell signal.
+    // write_index (for doorbell) = base write_index (before sync) + %count.
+    ldqueuewriteindex_global_rlx_u64    $d10, [$d0];            // d10 has the queue's write index
+    
+    // sync workitems
+    barrier;
+    
+    addqueuewriteindex_global_rlx_u64   $d1, [$d0], 1;          // d1 has the queue's write_index
+    add_u64                             $d3, $d0, 8;            // d3 has the address of AQL packets base address
+    add_u64                             $d4, $d0, 24;           // d4 has the address of the size of the queue
+    ld_global_s32                       $s1, [$d4];             // s1 has the size of the queue
+    
+    
+    // mod the write_index
+    mov_b32                             $s2, 0;
+    combine_v2_b64_b32                  $d5, ($s1, $s2);        // convert the size from 32-bit to 64-bit
+    rem_u64                             $d6, $d1, $d5;          // d6 has the index where a new packet is to be written at
+    // a dispatch packet is 64 (2^6) bytes
+    shl_u64                             $d5, $d6, 6;            // d5 now has the byte-offset at which a new packet is to be written
+    ld_global_u64                       $d6, [$d3];             // d6 now has the base address of AQL packets
+    add_u64                             $d7, $d6, $d5;          // d7 has the address where a new packet is to be written at
+    
+    // Packet: 32-63 bits
+    // reserved 2, must be j0
+    mov_b32                             $s2, 0;
+    st_global_u32                       $s2, [$d7+4];
+    
+    // use the work ID to select the proper return address and args
+    workitemflatabsid_u64	            $d13;
+    shl_u64                             $d13, $d13, 3;          // d13 is the offset to index the proper arguments
+    
+    // Packet: return location
+    ld_kernarg_align(8)_width(all)_u64	$d8, [%return_addresses];
+    add_u64                             $d8, $d8, $d13;
+    st_global_u64                       $d8, [$d7+8];
+    
+    // Packet: args
+    ld_kernarg_align(8)_width(all)_u64	$d8, [%dispatch_args];
+    add_u64                             $d8, $d8, $d13;
+    ld_global_u64                       $d9, [$d8];
+    st_global_u64                       $d9, [$d7+16];          // args[0] = ld [%dispatch_args + offset ($d13)]
+    mov_b64                             $d8, 0;
+    st_global_u64                       $d8, [$d7+24];          // args[1] = 0
+    st_global_u64                       $d8, [$d7+32];          // args[2] = 1
+    st_global_u64                       $d8, [$d7+40];          // args[3] = 0
+    
+    // Packet: reserved 3
+    mov_b64                             $d8, 0;
+    st_global_u64                       $d8, [$d7+48];
+   
+    // Packet: completion signal
+    ld_kernarg_align(8)_width(all)_u64	$d8, [%signal_handle];  
+    st_global_u64                       $d8, [$d7+56];
+    
+    // Packet: 0-31 bits
+    // agent_dispatch type (upper 16 bits) + packet header (lower 16 bits)
+    // 000        10    10       1           00000100         --> 0x1504
+    // ---        --    --       -           --------
+    // Reserved   Fence Scope   Barrier      packet type (agent dispatch)
+    mov_b32                             $s2, 0x80001504;
+    st_global_u32                       $s2, [$d7];
+    
+    // only the 1st workitem rings the doorbell with the greatest write_index
+    workitemflatabsid_u32	            $s1;
+	cmp_gt_b1_u32	                    $c0, $s1, 0;            
+	cbr_b1	$c0, @BB0_2;
+	
+	// signal the doorbell (the 1st workitem only)
+	ld_global_sig64	                    $d9, [$d0+16];          // d9 register is the signal handle
+	ld_kernarg_align(8)_width(all)_u64	$d11, [%count];         // total number of work items
+	add_u64                             $d12, $d10, $d11;       // the signal value
+	signalnoret_st_rlx_b64_sig64        $d9, $d12;
+	
+@BB0_2:
+	// %return
+	ret;
+};

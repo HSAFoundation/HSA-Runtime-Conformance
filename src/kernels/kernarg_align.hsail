@@ -1,0 +1,3793 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &kernarg_align:1:0:$full:$large:$default;
+
+decl prog function &abort()();
+
+/*
+ *  Kernel name: __kernarg_8_u64_8_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u64_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_8_u64_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_16_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u64_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_8_u64_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_32_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u64_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_8_u64_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_64_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u64_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_8_u64_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_128_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u64_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_8_u64_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_256_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u64_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_8_u64_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_8_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u64_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_16_u64_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_16_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u64_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_16_u64_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_32_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u64_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_16_u64_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_64_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u64_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_16_u64_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_128_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u64_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_16_u64_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_256_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u64_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_16_u64_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_8_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u64_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_32_u64_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_16_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u64_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_32_u64_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_32_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u64_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_32_u64_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_64_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u64_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_32_u64_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_128_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u64_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_32_u64_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_256_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u64_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_32_u64_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_8_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u64_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_64_u64_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_16_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u64_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_64_u64_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_32_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u64_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_64_u64_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_64_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u64_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_64_u64_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_128_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u64_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_64_u64_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_256_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u64_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_64_u64_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_8_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u64_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_128_u64_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_16_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u64_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_128_u64_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_32_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u64_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_128_u64_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_64_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u64_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_128_u64_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_128_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u64_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_128_u64_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_256_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u64_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_128_u64_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_8_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u64_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_256_u64_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_16_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u64_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_256_u64_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_32_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u64_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_256_u64_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_64_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u64_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_256_u64_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_128_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u64_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_256_u64_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_256_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u64_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_256_u64_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_8_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u64_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_8_u64_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_16_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u64_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_8_u64_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_32_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u64_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_8_u64_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_64_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u64_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_8_u64_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_128_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u64_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_8_u64_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u64_256_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u64_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u64 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_8_u64_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_8_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u64_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_16_u64_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_16_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u64_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_16_u64_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_32_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u64_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_16_u64_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_64_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u64_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_16_u64_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_128_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u64_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_16_u64_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u64_256_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u64_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u64 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_16_u64_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_8_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u64_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_32_u64_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_16_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u64_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_32_u64_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_32_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u64_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_32_u64_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_64_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u64_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_32_u64_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_128_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u64_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_32_u64_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u64_256_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u64_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u64 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_32_u64_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_8_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u64_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_64_u64_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_16_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u64_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_64_u64_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_32_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u64_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_64_u64_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_64_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u64_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_64_u64_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_128_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u64_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_64_u64_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u64_256_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u64_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u64 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_64_u64_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_8_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u64_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_128_u64_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_16_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u64_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_128_u64_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_32_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u64_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_128_u64_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_64_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u64_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_128_u64_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_128_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u64_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_128_u64_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u64_256_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u64_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u64 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_128_u64_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_8_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u64_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_256_u64_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_16_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u64_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_256_u64_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_32_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u64_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_256_u64_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_64_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u64_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_256_u64_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_128_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u64_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_256_u64_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u64_256_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u64_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u64 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_256_u64_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u64 $d2, [%arg_first];
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_8_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u32_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_8_u32_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_16_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u32_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_8_u32_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_32_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u32_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_8_u32_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_64_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u32_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_8_u32_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_128_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u32_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_8_u32_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_256_u64_kernel
+ */
+
+prog kernel &__kernarg_8_u32_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_8_u32_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_8_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u32_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_16_u32_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_16_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u32_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_16_u32_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_32_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u32_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_16_u32_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_64_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u32_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_16_u32_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_128_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u32_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_16_u32_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_256_u64_kernel
+ */
+
+prog kernel &__kernarg_16_u32_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_16_u32_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_8_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u32_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_32_u32_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_16_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u32_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_32_u32_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_32_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u32_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_32_u32_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_64_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u32_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_32_u32_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_128_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u32_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_32_u32_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_256_u64_kernel
+ */
+
+prog kernel &__kernarg_32_u32_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_32_u32_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_8_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u32_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_64_u32_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_16_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u32_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_64_u32_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_32_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u32_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_64_u32_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_64_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u32_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_64_u32_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_128_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u32_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_64_u32_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_256_u64_kernel
+ */
+
+prog kernel &__kernarg_64_u32_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_64_u32_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_8_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u32_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_128_u32_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_16_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u32_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_128_u32_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_32_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u32_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_128_u32_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_64_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u32_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_128_u32_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_128_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u32_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_128_u32_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_256_u64_kernel
+ */
+
+prog kernel &__kernarg_128_u32_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_128_u32_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_8_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u32_8_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(8) kernarg_u64 %arg_second) {
+@__kernarg_256_u32_8_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_16_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u32_16_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(16) kernarg_u64 %arg_second) {
+@__kernarg_256_u32_16_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_32_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u32_32_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(32) kernarg_u64 %arg_second) {
+@__kernarg_256_u32_32_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_64_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u32_64_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(64) kernarg_u64 %arg_second) {
+@__kernarg_256_u32_64_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_128_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u32_128_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(128) kernarg_u64 %arg_second) {
+@__kernarg_256_u32_128_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_256_u64_kernel
+ */
+
+prog kernel &__kernarg_256_u32_256_u64_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(256) kernarg_u64 %arg_second) {
+@__kernarg_256_u32_256_u64_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u64 $d3, [%arg_second];
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_8_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u32_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_8_u32_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_16_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u32_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_8_u32_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_32_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u32_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_8_u32_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_64_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u32_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_8_u32_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_128_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u32_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_8_u32_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_8_u32_256_u32_kernel
+ */
+
+prog kernel &__kernarg_8_u32_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(8) kernarg_u32 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_8_u32_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_8_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u32_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_16_u32_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_16_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u32_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_16_u32_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_32_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u32_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_16_u32_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_64_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u32_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_16_u32_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_128_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u32_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_16_u32_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_16_u32_256_u32_kernel
+ */
+
+prog kernel &__kernarg_16_u32_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(16) kernarg_u32 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_16_u32_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(16)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_8_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u32_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_32_u32_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_16_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u32_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_32_u32_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_32_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u32_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_32_u32_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_64_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u32_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_32_u32_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_128_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u32_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_32_u32_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_32_u32_256_u32_kernel
+ */
+
+prog kernel &__kernarg_32_u32_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(32) kernarg_u32 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_32_u32_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(32)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_8_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u32_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_64_u32_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_16_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u32_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_64_u32_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_32_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u32_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_64_u32_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_64_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u32_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_64_u32_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_128_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u32_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_64_u32_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_64_u32_256_u32_kernel
+ */
+
+prog kernel &__kernarg_64_u32_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(64) kernarg_u32 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_64_u32_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(64)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_8_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u32_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_128_u32_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_16_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u32_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_128_u32_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_32_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u32_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_128_u32_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_64_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u32_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_128_u32_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_128_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u32_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_128_u32_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_128_u32_256_u32_kernel
+ */
+
+prog kernel &__kernarg_128_u32_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(128) kernarg_u32 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_128_u32_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(128)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_8_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u32_8_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(8) kernarg_u32 %arg_second) {
+@__kernarg_256_u32_8_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(8)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_16_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u32_16_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(16) kernarg_u32 %arg_second) {
+@__kernarg_256_u32_16_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(16)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_32_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u32_32_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(32) kernarg_u32 %arg_second) {
+@__kernarg_256_u32_32_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(32)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_64_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u32_64_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(64) kernarg_u32 %arg_second) {
+@__kernarg_256_u32_64_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(64)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_128_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u32_128_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(128) kernarg_u32 %arg_second) {
+@__kernarg_256_u32_128_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(128)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+
+/*
+ *  Kernel name: __kernarg_256_u32_256_u32_kernel
+ */
+
+prog kernel &__kernarg_256_u32_256_u32_kernel(
+    kernarg_u64 %arg_output,
+    align(256) kernarg_u32 %arg_first,
+    align(256) kernarg_u32 %arg_second) {
+@__kernarg_256_u32_256_u32_kernel:
+    // BB#0:
+    //Obtain the output location for this workitem
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 3;
+    ld_kernarg_align(256)_width(all)_u64 $d0, [%arg_output];
+    add_u64 $d0, $d0, $d3;
+    //Load and sum the values 
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_first];
+    cvt_u64_u32 $d2, $s1;
+    ld_kernarg_align(256)_width(all)_u32 $s1, [%arg_second];
+    cvt_u64_u32 $d3, $s1;
+    add_u64 $d3, $d2, $d3;
+    st_global_u64 $d3, [$d0];
+    // %return
+    ret;
+};
+

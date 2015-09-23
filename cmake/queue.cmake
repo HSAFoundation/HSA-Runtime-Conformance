@@ -1,0 +1,14 @@
+## Target executable name.
+set (TARGET hsa_queue)
+
+## Specify the SRC_DIR.
+set (SRC_DIR "${CMAKE_SOURCE_DIR}/src/core/queue")
+
+## Source files.
+set (SOURCE_FILES hsa_queue.c test_queue_create_concurrent.c test_queue_create_parameters.c test_queue_callback.c test_queue_destroy_concurrent.c test_queue_full.c test_queue_dispatch_concurrent.c test_queue_inactivate.c test_queue_size_create.c test_queue_multi_gap.c test_queue_write_index_add_acq_rel_ordering.c test_queue_write_index_add_acquire_release_ordering.c test_queue_write_index_add_atomic.c test_queue_write_index_cas_acq_rel_ordering.c test_queue_write_index_cas_acquire_release_ordering.c test_queue_write_index_cas_atomic.c test_queue_write_index_load_store_atomic.c test_queue_multiple_queues.c test_queue_multiple_dispatch.c)
+
+## Test list.
+set (TEST_LIST queue_create_parameters queue_callback queue_destroy_concurrent queue_dispatch_concurrent queue_full queue_multiple_dispatch queue_inactivate queue_size_create queue_multiple_queues queue_multi_gap queue_write_index_add_acq_rel_ordering queue_write_index_add_acquire_release_ordering queue_write_index_add_atomic queue_write_index_cas_acq_rel_ordering queue_write_index_cas_acquire_release_ordering queue_write_index_cas_atomic) 
+
+include (build)
+include (test)

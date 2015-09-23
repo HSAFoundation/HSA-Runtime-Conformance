@@ -1,0 +1,207 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &group_memory:1:0:$full:$large:$default;
+
+decl prog function &abort()();
+
+/*
+ *  Kernels: group_memory_static_kernel
+ *
+ *  Description: The purpose of the group memory kernel
+ *  is to generate a BRIG file that requires group memory.
+ *
+ *  Psuedo code:
+ *
+ *  __kernel void group_memory_static(__global uint *in, 
+ *                                    __global uint *out, 
+ *                                    __private uint count) {
+ *    __private uint gid;
+ *    __local uint grp[256];
+ * 
+ *    gid = get_global_id(0);
+ * 
+ *    if(lid > count) {
+ *      return;
+ *    }
+ * 
+ *    grp[gid] = in[gid];
+ *
+ *    barrier(CLK_LOCAL_MEM_FENCE);
+ * 
+ *    out[gid] = grp[gid];
+ * 
+ *    return;
+ * }
+ *
+ */
+
+prog kernel &__group_memory_static_kernel(
+    kernarg_u64 %in,
+    kernarg_u64 %out,
+    kernarg_u32 %count) {
+
+    group_u32 %grp[256];
+
+@__group_memory_static_kernel_entry:
+    // BB#0:                                // %entry
+    ld_kernarg_align(4)_width(all)_u32 $s0, [%count];
+    workitemid_u32 $s1, 0;
+    cmp_gt_b1_u32 $c0, $s1, $s0;
+    cbr_b1    $c0, @BB0_2;
+    // BB#1:                                // %if.end
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%in];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%out];
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d2, $s0;
+    shl_u64 $d2, $d2, 2;
+    shl_u32 $s0, $s0, 2;
+    add_u64 $d0, $d0, $d2;
+    add_u64 $d1, $d1, $d2;
+
+    //Load the global data.
+    ld_global_u32 $s1, [$d0];
+
+    //Store the value to group memory.
+    st_group_u32 $s1, [%grp][$s0];
+
+    barrier;
+
+    //Load the value from group memory.
+    ld_group_u32 $s1, [%grp][$s0];
+
+    //Store the value to global memory.
+    st_global_u32 $s1, [$d1];
+
+@BB0_2:
+    // %return
+    ret;
+};
+
+/*
+ *  Kernels: group_memory_dynamic_kernel
+ *
+ *  Description: The purpose of the group memory kernel
+ *  is to generate a BRIG file that requires dynamic group memory.
+ *
+ *  Psuedo code:
+ *
+ *  __kernel void group_memory_dynamic(__global uint *in, 
+ *                                     __global uint *out,
+ *                                     __local uint *grp_offset,
+ *                                     __private uint count) {
+ *    __private uint gid;
+ * 
+ *    gid = get_global_id(0);
+ * 
+ *    if(lid > count) {
+ *      return;
+ *    }
+ * 
+ *    grp_offset[gid] = in[gid];
+ *
+ *    barrier(CLK_LOCAL_MEM_FENCE);
+ * 
+ *    out[gid] = grp_offset[gid];
+ * 
+ *    return;
+ * }
+ *
+ */
+
+prog kernel &__group_memory_dynamic_kernel(
+    kernarg_u64 %in,
+    kernarg_u64 %out,
+    kernarg_u32 %grp_offset,
+    kernarg_u32 %count) {
+
+    // Define some static group memory so the offset is not 0.
+    group_u32 %grp[256];
+
+@__group_memory_dynamic_kernel_entry:
+    // BB#0:                                // %entry
+    ld_kernarg_align(4)_width(all)_u32 $s0, [%count];
+    workitemid_u32 $s1, 0;
+    cmp_gt_b1_u32 $c0, $s1, $s0;
+    cbr_b1    $c0, @BB0_2;
+    // BB#1:                                // %if.end
+    ld_kernarg_align(8)_width(all)_u64 $d0, [%in];
+    ld_kernarg_align(8)_width(all)_u64 $d1, [%out];
+    ld_kernarg_align(8)_width(all)_u32 $s2, [%grp_offset];
+    workitemabsid_u32 $s0, 0;
+    cvt_u64_u32 $d3, $s0;
+    shl_u64 $d3, $d3, 2;
+    shl_u32 $s1, $s0, 2;
+    add_u64 $d0, $d0, $d3;
+    add_u64 $d1, $d1, $d3;
+
+    //Get the base pointer to group memory.
+    groupbaseptr_u32 $s3;
+    
+    //Add the offset to the base pointer.
+    add_u32 $s2, $s2, $s3;
+
+    //Add the gid offset to the specific work-items
+    //group memory element.
+    add_u32 $s2, $s2, $s1;
+
+    //Load the global data.
+    ld_global_u32 $s1, [$d0];
+
+    //Store the data into group memory.
+    st_group_u32 $s1, [$s2];
+
+    barrier;
+
+    //Load the data from group memory.
+    ld_group_u32 $s1, [$s2];
+
+    //Store the data to global memory.
+    st_global_u32 $s1, [$d1];
+
+@BB0_2:
+    // %return
+    ret;
+};

@@ -1,0 +1,193 @@
+/*
+ * =============================================================================
+ *   HSA Runtime Conformance Release License
+ * =============================================================================
+ * The University of Illinois/NCSA
+ * Open Source License (NCSA)
+ *
+ * Copyright (c) 2014, Advanced Micro Devices, Inc.
+ * All rights reserved.
+ *
+ * Developed by:
+ *
+ *                 AMD Research and AMD HSA Software Development
+ *
+ *                 Advanced Micro Devices, Inc.
+ *
+ *                 www.amd.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal with the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ *  - Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimers.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimers in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the names of <Name of Development Group, Name of Institution>,
+ *    nor the names of its contributors may be used to endorse or promote
+ *    products derived from this Software without specific prior written
+ *    permission.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS WITH THE SOFTWARE.
+ *
+ */
+
+module &init_data:1:0:$full:$large:$default;
+
+/*
+ *  Kernels: init_<type>_data
+ *  
+ *  Description: The init_<type>_data kernels initialize a
+ *  logical 1d, 2d or 3d block of data using a specified
+ *  value. The row pitch parameter specifies the size of
+ *  each logical row and the slice_pitch parameter specifies
+ *  the size of each logical 2D sheet. Kernel for int, float
+ *  and double are specified.
+ *
+ *  Psuedo code:
+ *
+ *  __kernel void init_<type>_data(
+ *                          __global <type> *data, 
+ *                          <type> value, 
+ *                          uint row_pitch, 
+ *                          uint slice_pitch) {
+ *     uint dims = get_work_dim();
+ *     size_t idx = get_global_id(0);
+ *     idx += (dims > 1) ? (get_global_id(1) * row_pitch) : 0;
+ *     idx += (dims > 2) ? (get_global_id(2) * slice_pitch) : 0;
+ *     data[idx] = value;
+ *     return;
+ *  }
+ *
+ */
+
+decl prog function &abort()();
+
+prog kernel &__init_int_data_kernel(
+	kernarg_u64 %data,
+	kernarg_u32 %value,
+	kernarg_u32 %row_pitch,
+	kernarg_u32 %slice_pitch) {
+@__init_int_data_kernel_entry:
+	// BB#0:                                // %entry
+	mov_b64	$d2, 0;
+	dim_u32	$s1;
+	workitemabsid_u32	$s0, 0;
+	cvt_u64_u32	$d1, $s0;
+	ld_kernarg_align(4)_width(all)_u32	$s0, [%value];
+	ld_kernarg_align(8)_width(all)_u64	$d0, [%data];
+	cmp_lt_b1_u32	$c0, $s1, 2;
+	cbr_b1	$c0, @BB0_3;
+	// BB#1:                                // %cond.end
+	ld_kernarg_align(4)_width(all)_u32	$s2, [%row_pitch];
+	cvt_u64_u32	$d3, $s2;
+	workitemabsid_u32	$s2, 1;
+	cvt_u64_u32	$d4, $s2;
+	mad_u64	$d1, $d4, $d3, $d1;
+	cmp_lt_b1_u32	$c0, $s1, 3;
+	cbr_b1	$c0, @BB0_3;
+	// BB#2:                                // %cond.true5
+	ld_kernarg_align(4)_width(all)_u32	$s1, [%slice_pitch];
+	cvt_u64_u32	$d2, $s1;
+	workitemabsid_u32	$s1, 2;
+	cvt_u64_u32	$d3, $s1;
+	mul_u64	$d2, $d3, $d2;
+
+@BB0_3:
+	// %cond.end10
+	add_u64	$d1, $d2, $d1;
+	shl_u64	$d1, $d1, 2;
+	add_u64	$d0, $d0, $d1;
+	st_global_u32	$s0, [$d0];
+	ret;
+};
+
+prog kernel &__init_float_data_kernel(
+	kernarg_u64 %data,
+	kernarg_f32 %value,
+	kernarg_u32 %row_pitch,
+	kernarg_u32 %slice_pitch) {
+@__init_float_data_kernel_entry:
+	// BB#0:                                // %entry
+	mov_b64	$d2, 0;
+	dim_u32	$s1;
+	workitemabsid_u32	$s0, 0;
+	cvt_u64_u32	$d1, $s0;
+	ld_kernarg_align(4)_width(all)_f32	$s0, [%value];
+	ld_kernarg_align(8)_width(all)_u64	$d0, [%data];
+	cmp_lt_b1_u32	$c0, $s1, 2;
+	cbr_b1	$c0, @BB1_3;
+	// BB#1:                                // %cond.end
+	ld_kernarg_align(4)_width(all)_u32	$s2, [%row_pitch];
+	cvt_u64_u32	$d3, $s2;
+	workitemabsid_u32	$s2, 1;
+	cvt_u64_u32	$d4, $s2;
+	mad_u64	$d1, $d4, $d3, $d1;
+	cmp_lt_b1_u32	$c0, $s1, 3;
+	cbr_b1	$c0, @BB1_3;
+	// BB#2:                                // %cond.true5
+	ld_kernarg_align(4)_width(all)_u32	$s1, [%slice_pitch];
+	cvt_u64_u32	$d2, $s1;
+	workitemabsid_u32	$s1, 2;
+	cvt_u64_u32	$d3, $s1;
+	mul_u64	$d2, $d3, $d2;
+
+@BB1_3:
+	// %cond.end10
+	add_u64	$d1, $d2, $d1;
+	shl_u64	$d1, $d1, 2;
+	add_u64	$d0, $d0, $d1;
+	st_global_f32	$s0, [$d0];
+	ret;
+};
+
+prog kernel &__init_double_data_kernel(
+	kernarg_u64 %data,
+	kernarg_f64 %value,
+	kernarg_u32 %row_pitch,
+	kernarg_u32 %slice_pitch) {
+@__init_double_data_kernel_entry:
+
+// BB#0:                                // %entry
+	mov_b64	$d3, 0;
+	dim_u32	$s0;
+	workitemabsid_u32	$s1, 0;
+	cvt_u64_u32	$d2, $s1;
+	ld_kernarg_align(8)_width(all)_f64	$d0, [%value];
+	ld_kernarg_align(8)_width(all)_u64	$d1, [%data];
+	cmp_lt_b1_u32	$c0, $s0, 2;
+	cbr_b1	$c0, @BB2_3;
+	// BB#1:                                // %cond.end
+	ld_kernarg_align(4)_width(all)_u32	$s1, [%row_pitch];
+	cvt_u64_u32	$d4, $s1;
+	workitemabsid_u32	$s1, 1;
+	cvt_u64_u32	$d5, $s1;
+	mad_u64	$d2, $d5, $d4, $d2;
+	cmp_lt_b1_u32	$c0, $s0, 3;
+	cbr_b1	$c0, @BB2_3;
+	// BB#2:                                // %cond.true5
+	ld_kernarg_align(4)_width(all)_u32	$s0, [%slice_pitch];
+	cvt_u64_u32	$d3, $s0;
+	workitemabsid_u32	$s0, 2;
+	cvt_u64_u32	$d4, $s0;
+	mul_u64	$d3, $d4, $d3;
+
+@BB2_3:
+	// %cond.end10
+	add_u64	$d2, $d3, $d2;
+	shl_u64	$d2, $d2, 3;        //64bits double, need to shift by three bits to calculate the index
+	add_u64	$d1, $d1, $d2;      //add the index and the base address to calculate the address of the elements 
+	st_global_f64	$d0, [$d1];
+	ret;
+};
