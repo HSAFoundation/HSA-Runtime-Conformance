@@ -234,7 +234,7 @@ static void child_func_release(void* data) {
             #else
                 signal_value = 0x0000fff0;
                 for (ii = 0; ii < 2; ++ii) {
-                    hsa_signal_or_rlease(signal_handle, signal_value);
+                    hsa_signal_or_release(signal_handle, signal_value);
                     signal_value = signal_value << 16;
                 }
             #endif
