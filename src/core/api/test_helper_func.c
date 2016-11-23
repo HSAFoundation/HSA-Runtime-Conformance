@@ -438,7 +438,7 @@ void launch_no_op_kernels(hsa_agent_t* agent,
         // Obtain the address of the queue packet entry
         queue_packet =
             (hsa_kernel_dispatch_packet_t*) (queue->base_address +
-                                             write_index * packet_size);
+                                             (write_index % queue->size) * packet_size);
         // Copy the initialized packet to the queue packet entry
         memcpy(queue_packet, &dispatch_packet, packet_size);
         // Set the queue packet entries header.type value
