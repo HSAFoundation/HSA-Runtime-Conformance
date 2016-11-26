@@ -229,12 +229,16 @@ int test_hsa_queue_create_out_of_resources() {
             continue;
         }
 
+        uint32_t type = 0;
+        status = hsa_agent_get_info(agent_list.agents[ii], HSA_AGENT_INFO_QUEUE_TYPE, &type);
+        ASSERT(HSA_STATUS_SUCCESS == status);
+
         // Create the queues
         const uint32_t queue_size = 128;
         hsa_queue_t** queues = (hsa_queue_t**)malloc(queues_max * sizeof(hsa_queue_t*));
         int num_queues = 0;
         while (num_queues < queues_max) {
-            status = hsa_queue_create(agent_list.agents[ii], queue_size, HSA_QUEUE_TYPE_MULTI, NULL, NULL, UINT32_MAX, UINT32_MAX, queues + num_queues);
+            status = hsa_queue_create(agent_list.agents[ii], queue_size, type, NULL, NULL, UINT32_MAX, UINT32_MAX, queues + num_queues);
             if (HSA_STATUS_ERROR_OUT_OF_RESOURCES == status) {
                 break;
             }
