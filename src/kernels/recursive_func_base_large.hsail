@@ -1,0 +1,115 @@
+// * =============================================================================
+// *   HSA Runtime Conformance Release License
+// * =============================================================================
+// * The University of Illinois/NCSA
+// * Open Source License (NCSA)
+// *
+// * Copyright (c) 2014, Advanced Micro Devices, Inc.
+// * All rights reserved.
+// *
+// * Developed by:
+// *
+// *                 AMD Research and AMD HSA Software Development
+// *
+// *                 Advanced Micro Devices, Inc.
+// *
+// *                 www.amd.com
+// *
+// * Permission is hereby granted, free of charge, to any person obtaining a copy
+// * of this software and associated documentation files (the "Software"), to
+// * deal with the Software without restriction, including without limitation
+// * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// * and/or sell copies of the Software, and to permit persons to whom the
+// * Software is furnished to do so, subject to the following conditions:
+// *
+// *  - Redistributions of source code must retain the above copyright notice,
+// *    this list of conditions and the following disclaimers.
+// *  - Redistributions in binary form must reproduce the above copyright
+// *    notice, this list of conditions and the following disclaimers in
+// *    the documentation and/or other materials provided with the distribution.
+// *  - Neither the names of <Name of Development Group, Name of Institution>,
+// *    nor the names of its contributors may be used to endorse or promote
+// *    products derived from this Software without specific prior written
+// *    permission.
+// *
+// * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// * THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// * DEALINGS WITH THE SOFTWARE.
+// *
+// 
+module &recursive_func:1:0:$base:$large:$default;
+
+decl prog function &abort()();
+
+prog function &recur_add_fn(arg_u32 %out)(
+	arg_u32 %in0,
+	arg_u32 %in1)
+{
+	ld_arg_u32	$s0, [%in0];
+	//expect to be 0 at first call, in1 on last call
+	ld_arg_u32	$s1, [%in1];
+	//expect to be RECURSE_COUNT
+	// if the in1 <= in0, go to return
+	cmp_eq_b1_u32	$c1, $s1, $s0;
+	cbr_b1	$c1, @return;
+	// if in0 <= in1, increase in0 by 1
+	// call the function recursively with the updated in0 value
+	{
+		arg_u32 %outarg;
+		arg_u32 %arg0;
+		arg_u32 %arg1;
+		add_u32	$s0, $s0, 1;
+		//fill in the arguments
+		st_arg_u32	$s0, [%arg0];
+		st_arg_u32	$s1, [%arg1];
+		call	&recur_add_fn (%outarg) (%arg0, %arg1);
+	}
+	// store the value of s0 to out, then return
+
+@return:
+	st_arg_u32	$s0, [%out];
+	ret;
+};
+
+prog kernel &__recursive_func_kernel(
+	kernarg_u64 %out,
+	kernarg_u32 %in0,
+	kernarg_u32 %in1)
+{
+
+@__recursive_func_kernel_entry:
+	// BB#0:                                        // %entry
+	workitemabsid_u32	$s0, 0;
+	// obtain the work_item absolute ID within the entire grid
+	cvt_u64_u32	$d0, $s0;
+	// convert 32 bits to 64 bits, stored in $d0
+	shl_u64	$d1, $d0, 2;
+	// shift $d0 left by 2 bit, store in $d1, for integers 
+	ld_kernarg_align(8)_width(all)_u64	$d0, [%out];
+	// load the base address of out to $d0
+	add_u64	$d0, $d0, $d1;
+	// calculate the address of the output element
+	ld_kernarg_align(4)_width(all)_u32	$s1, [%in0];
+	// load the value of in0
+	ld_kernarg_align(4)_width(all)_u32	$s2, [%in1];
+	// load the value of in1
+	// start argument scope
+	{
+		arg_u32 %outarg;
+		arg_u32 %arg0;
+		arg_u32 %arg1;
+		// fill in the arguments
+		st_arg_u32	$s1, [%arg0];
+		st_arg_u32	$s2, [%arg1];
+		call	&recur_add_fn (%outarg) (%arg0, %arg1);
+		ld_arg_align(4)_u32	$s0, [%outarg];
+	}
+	// end of argument scope
+	st_global_align(4)_s32	$s0, [$d0];
+	// store the result to the out vector
+	ret;
+};

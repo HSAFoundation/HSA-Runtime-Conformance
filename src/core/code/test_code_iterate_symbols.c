@@ -388,10 +388,6 @@ int test_code_iterate_symbols() {
     status = hsa_init();
     ASSERT(HSA_STATUS_SUCCESS == status);
 
-    // Load the BRIG module
-    hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("vector_copy.brig", &module));
-
     // Get a list of agents, and iterate throught the list
     struct agent_list_s agent_list;
     get_agent_list(&agent_list);
@@ -405,6 +401,12 @@ int test_code_iterate_symbols() {
             continue;
         }
 
+        // Load the BRIG module
+        hsa_ext_module_t module;
+        ASSERT(0 == load_base_or_full_module_from_file(agent_list.agents[ii],
+                                                       "vector_copy_base_large.brig",
+                                                       "vector_copy.brig",
+                                                       &module));
         // Get the ISA from this agent
         hsa_isa_t agent_isa;
         agent_isa.handle = (uint64_t)-1;
@@ -472,11 +474,11 @@ int test_code_iterate_symbols() {
         ASSERT(HSA_STATUS_SUCCESS == status);
         status = hsa_code_object_destroy(code_object);
         ASSERT(HSA_STATUS_SUCCESS == status);
+
+        destroy_module(module);
     }
 
     free_agent_list(&agent_list);
-
-    destroy_module(module);
 
     status = hsa_shut_down();
     ASSERT(HSA_STATUS_SUCCESS == status);

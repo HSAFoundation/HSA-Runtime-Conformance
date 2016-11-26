@@ -130,6 +130,25 @@ int load_module_from_file(const char* file_name, hsa_ext_module_t* module) {
     return rc;
 }
 
+// Loads file 'base_file_name' to the given module in case the given
+// agent supports finalization of the BASE profile, otherwise
+// loads the file 'full_file_name'.
+int load_base_or_full_module_from_file(hsa_agent_t agent,
+                                       const char* base_file_name,
+                                       const char* full_file_name,
+                                       hsa_ext_module_t* module) {
+    hsa_profile_t profile;
+    hsa_status_t status;
+    const char *file_name;
+    status = hsa_agent_get_info(agent, HSA_AGENT_INFO_PROFILE, &profile);
+    if (HSA_STATUS_SUCCESS != status)
+      return -1;
+
+    file_name = (profile == HSA_PROFILE_BASE) ?
+      base_file_name : full_file_name;
+    return load_module_from_file(file_name, module);
+}
+
 void destroy_module(hsa_ext_module_t module) {
     char* buf = (char*) module;
 

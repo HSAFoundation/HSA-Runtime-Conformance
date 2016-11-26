@@ -376,12 +376,22 @@ int test_hsa_ext_program_finalize_directive_mismatch() {
     status = get_finalization_fnc_tbl(&pfn);
     ASSERT(HSA_STATUS_SUCCESS == status);
 
+    // Find the agent that supports kernel dispatch
+    hsa_agent_t agent;
+    agent.handle = (uint64_t)-1;
+    status = hsa_iterate_agents(get_kernel_dispatch_agent, &agent);
+    ASSERT((uint64_t)-1 != agent.handle);
+
+    hsa_profile_t profile;
+    status = hsa_agent_get_info(agent, HSA_AGENT_INFO_PROFILE, &profile);
+    ASSERT(HSA_STATUS_SUCCESS == status);
+
     // Create a program object
     hsa_ext_program_t program;
     program.handle = (uint64_t)-1;
     status = pfn.hsa_ext_program_create(
         HSA_MACHINE_MODEL_LARGE,
-        HSA_PROFILE_FULL,
+        profile,
         HSA_DEFAULT_FLOAT_ROUNDING_MODE_DEFAULT,
         NULL,
         &program);
@@ -392,18 +402,16 @@ int test_hsa_ext_program_finalize_directive_mismatch() {
     char module_name[256] = "no_op.brig";
     char symbol_name[256] = "&__no_op_kernel";
     hsa_ext_module_t module;
-    status = load_module_from_file(module_name, &module);
+    status = load_base_or_full_module_from_file(agent,
+                                                "no_op_base_large.brig",
+                                                "no_op.brig",
+                                                &module);
     ASSERT(HSA_STATUS_SUCCESS == status);
 
     // Add the module to the program
     status = pfn.hsa_ext_program_add_module(program, module);
     ASSERT(HSA_STATUS_SUCCESS == status);
 
-    // Find the agent that supports kernel dispatch
-    hsa_agent_t agent;
-    agent.handle = (uint64_t)-1;
-    status = hsa_iterate_agents(get_kernel_dispatch_agent, &agent);
-    ASSERT((uint64_t)-1 != agent.handle);
 
     // Get the ISA from the current agent
     hsa_isa_t isa;

@@ -100,7 +100,10 @@ int test_hsa_code_object_get_info() {
 
     // Load the BRIG module
     hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("no_op.brig", &module));
+    ASSERT(0 == load_base_or_full_module_from_file(agent,
+                                                   "no_op_base_large.brig",
+                                                   "no_op.brig",
+                                                   &module));
 
     hsa_machine_model_t agent_machine_model;
     status = hsa_agent_get_info(agent, HSA_AGENT_INFO_MACHINE_MODEL, &agent_machine_model);

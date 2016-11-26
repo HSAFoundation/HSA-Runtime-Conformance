@@ -91,10 +91,6 @@ int test_code_define_global_agent() {
         return 0;
     }
 
-    // Load the BRIG module
-    hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("global_agent_vector_copy.brig", &module));
-
     // Get a list of agents, and iterate throught the list
     struct agent_list_s agent_list;
     get_agent_list(&agent_list);
@@ -108,6 +104,13 @@ int test_code_define_global_agent() {
         if (HSA_AGENT_FEATURE_KERNEL_DISPATCH != feature) {
             continue;
         }
+
+        // Load the BRIG module
+        hsa_ext_module_t module;
+        ASSERT(0 == load_base_or_full_module_from_file(agent_list.agents[ii],
+                                                   "global_agent_vector_copy_base_large.brig",
+                                                   "global_agent_vector_copy.brig",
+                                                   &module));
 
         // Get the ISA from this agent
         hsa_isa_t agent_isa;
@@ -232,12 +235,12 @@ int test_code_define_global_agent() {
         // Destroy the code object
         status = hsa_code_object_destroy(code_object);
         ASSERT(HSA_STATUS_SUCCESS == status);
+
+        // Destroy the loaded module
+        destroy_module(module);
     }
 
     free_agent_list(&agent_list);
-
-    // Destroy the loaded module
-    destroy_module(module);
 
     // Shutdown runtime
     status = hsa_shut_down();

@@ -113,6 +113,13 @@ int test_code_program_scope_symbol() {
             continue;
         }
         
+        // Load the BRIG module
+        hsa_ext_module_t module;
+        ASSERT(0 == load_base_or_full_module_from_file(agent_list.agents[ii],
+                                                   "program_scope_base_large.brig",
+                                                   "program_scope.brig",
+                                                   &module));
+
         // Create a queue for dispatching
         hsa_queue_t* queue;
         status = hsa_queue_create(agent_list.agents[ii], 1024, HSA_QUEUE_TYPE_SINGLE, NULL, NULL,UINT32_MAX,UINT32_MAX, &queue);
