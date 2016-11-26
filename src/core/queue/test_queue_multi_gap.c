@@ -146,6 +146,13 @@ int test_queue_multi_gap() {
             continue;
         }
 
+        hsa_queue_type_t queue_type = 0;
+        status = hsa_agent_get_info(agent_list.agents[ii], HSA_AGENT_INFO_QUEUE_TYPE, &queue_type);
+        ASSERT(HSA_STATUS_SUCCESS == status);
+        if (HSA_QUEUE_TYPE_MULTI != queue_type) {
+            continue;
+        }
+
         // Find a memory region in the global segment that supports fine grained memory
         hsa_region_t global_region;
         global_region.handle=(uint64_t)-1;
