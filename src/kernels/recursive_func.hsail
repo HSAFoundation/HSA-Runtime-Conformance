@@ -65,6 +65,7 @@ prog function &recur_add_fn(arg_u32 %out)(arg_u32 %in0, arg_u32 %in1) {
         st_arg_u32 $s0, [%arg0];
         st_arg_u32 $s1, [%arg1];
         call &recur_add_fn (%outarg)(%arg0,%arg1);
+        ld_arg_align(4)_u32 $s0, [%outarg];
     } // store the value of s0 to out, then return
 
 @return:
