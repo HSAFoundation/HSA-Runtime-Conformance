@@ -84,7 +84,7 @@ int test_memory_copy_allocated_to_allocated() {
         hsa_region_t global_region;
         global_region.handle=(uint64_t)-1;
         hsa_agent_iterate_regions(agent_list.agents[ii], get_global_memory_region, &global_region);
-        if ((uint64_t)-1 != global_region.handle) {
+        if ((uint64_t)-1 == global_region.handle) {
             continue;
         }
 
