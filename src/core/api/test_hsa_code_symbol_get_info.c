@@ -164,16 +164,19 @@ int test_hsa_code_symbol_get_info() {
     status = hsa_init();
     ASSERT(HSA_STATUS_SUCCESS == status);
 
-    // Load a valid brig module
-    hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("vector_copy.brig", &module));
-
     // Get the kernel dispatch agent
     hsa_agent_t agent;
     agent.handle = (uint64_t)-1;
     status = hsa_iterate_agents(
         callback_get_kernel_dispatch_agent, &agent);
     ASSERT((uint64_t)-1 != agent.handle);
+
+    // Load a valid brig module
+    hsa_ext_module_t module;
+    ASSERT(0 == load_base_or_full_module_from_file(agent,
+                                                   "vector_copy_base_large.brig",
+                                                   "vector_copy.brig",
+                                                   &module));
 
     // Get machine model and profile to create a program
     hsa_machine_model_t machine_model;

@@ -108,6 +108,10 @@ typedef struct hsa_ext_finalizer_pfn_s {
 hsa_status_t get_finalization_fnc_tbl(hsa_ext_finalizer_pfn_t *table);
 
 int load_module_from_file(const char* file, hsa_ext_module_t* module);
+int load_base_or_full_module_from_file(hsa_agent_t agent,
+                                       const char* base_file_name,
+                                       const char* full_file_name,
+                                       hsa_ext_module_t* module);
 
 void destroy_module(hsa_ext_module_t module);
 

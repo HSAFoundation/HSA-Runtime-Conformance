@@ -94,7 +94,10 @@ void load_module_finalize_program(
     ASSERT((uint64_t)-1 != agent_isa.handle);
 
     // Load the BRIG module
-    ASSERT(0 == load_module_from_file("no_op.brig", module_ptr));
+    ASSERT(0 == load_base_or_full_module_from_file(agent,
+                                                   "no_op_base_large.brig",
+                                                   "no_op.brig",
+                                                   module_ptr));
 
     hsa_machine_model_t machine_model;
     status = hsa_agent_get_info(agent, HSA_AGENT_INFO_MACHINE_MODEL, &machine_model);

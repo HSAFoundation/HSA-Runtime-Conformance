@@ -90,11 +90,7 @@ int test_code_module_scope_symbol() {
     if(HSA_STATUS_SUCCESS != status) {
         return 0;
     }
- 
-    // Load the BRIG module
-    hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("module_scope.brig", &module));   
-    
+
     // Module name and symbol names
     const char* module_name = "&module_scope";
     const char* symbol_name = "&__vector_copy_kernel";
@@ -113,6 +109,13 @@ int test_code_module_scope_symbol() {
             continue;
         }
         
+        // Load the BRIG module
+        hsa_ext_module_t module;
+        ASSERT(0 == load_base_or_full_module_from_file(agent_list.agents[ii],
+                                                   "module_scope_base_large.brig",
+                                                   "module_scope.brig",
+                                                   &module));
+
         // Create a queue for dispatching
         hsa_queue_t* queue;
         status = hsa_queue_create(agent_list.agents[ii], 1024, HSA_QUEUE_TYPE_SINGLE, NULL, NULL,UINT32_MAX,UINT32_MAX, &queue);
@@ -262,12 +265,12 @@ int test_code_module_scope_symbol() {
         // Destroy the queue
         status = hsa_queue_destroy(queue);
         ASSERT(HSA_STATUS_SUCCESS == status);
+
+        // Destroy the loaded module
+        destroy_module(module);
     }
 
     free_agent_list(&agent_list);
-    
-    // Destroy the loaded module
-    destroy_module(module);
 
     // Shutdown runtime
     status = hsa_shut_down();

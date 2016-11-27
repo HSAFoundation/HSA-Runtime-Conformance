@@ -96,10 +96,6 @@ int test_code_serialize_deserialize() {
         return 0;
     }
 
-    // Load the BRIG module
-    hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("no_op.brig", &module));
-
     // Get a list of agents, and iterate throught the list
     struct agent_list_s agent_list;
     get_agent_list(&agent_list);
@@ -112,7 +108,13 @@ int test_code_serialize_deserialize() {
         if (HSA_AGENT_FEATURE_KERNEL_DISPATCH != feature) {
             continue;
         }
-
+        
+        // Load the BRIG module
+        hsa_ext_module_t module;
+        ASSERT(0 == load_base_or_full_module_from_file(agent_list.agents[ii],
+                                                       "no_op_base_large.brig",
+                                                       "no_op.brig",
+                                                       &module));
         // Get the ISA from this agent
         hsa_isa_t agent_isa;
         agent_isa.handle = (uint64_t)-1;
@@ -448,11 +450,10 @@ int test_code_serialize_deserialize() {
             free(symbol_attribute_info_after[jj]);
             free(executable_symbol_attribute_info_after[jj]);
             }
+            destroy_module(module);
     }
 
     free_agent_list(&agent_list);
-
-    destroy_module(module);
 
     status = hsa_shut_down();
     ASSERT(HSA_STATUS_SUCCESS == status);

@@ -103,7 +103,10 @@ int test_hsa_isa_compatible() {
 
     // Load the BRIG module
     hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("no_op.brig", &module));
+    ASSERT(0 == load_base_or_full_module_from_file(agent,
+                                                   "no_op_base_large.brig",
+                                                   "no_op.brig",
+                                                   &module));
 
     hsa_machine_model_t machine_model;
     status = hsa_agent_get_info(agent, HSA_AGENT_INFO_MACHINE_MODEL, &machine_model);
@@ -193,7 +196,10 @@ int test_hsa_isa_compatible_invalid_isa() {
 
     // Load the BRIG module
     hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("no_op.brig", &module));
+    ASSERT(0 == load_base_or_full_module_from_file(agent,
+                                                   "no_op_base_large.brig",
+                                                   "no_op.brig",
+                                                   &module));
 
     hsa_machine_model_t machine_model;
     status = hsa_agent_get_info(agent, HSA_AGENT_INFO_MACHINE_MODEL, &machine_model);
@@ -291,7 +297,10 @@ int test_hsa_isa_compatible_null_result() {
 
     // Load the BRIG module
     hsa_ext_module_t module;
-    ASSERT(0 == load_module_from_file("no_op.brig", &module));
+    ASSERT(0 == load_base_or_full_module_from_file(agent,
+                                                   "no_op_base_large.brig",
+                                                   "no_op.brig",
+                                                   &module));
 
     hsa_machine_model_t machine_model;
     status = hsa_agent_get_info(agent, HSA_AGENT_INFO_MACHINE_MODEL, &machine_model);
